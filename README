@@ -1,0 +1,12 @@
+# Implementation of Shingling, MinHash and LSH  
+
+## Process
+
+![Stanford slides image](docs/process.png "Process Overview")
+
+## References
+1. [Web Article with code example](https://www.codemotion.com/magazine/backend/fast-document-similarity-in-python-minhashlsh/)
+2. [Stanford Chapter 3 lecture](https://www.youtube.com/watch?v=dRWO3il-jjA)
+3. [Starter Notebook](https://github.com/nicoDs96/Document-Similarity-using-Python-and-PySpark/blob/master/LSH/DM_HW2_Ex2.ipynb)
+4. [MMDS book](http://infolab.stanford.edu/~ullman/mmds/book.pdf)
+5. [MMDS slides](http://www.mmds.org/mmds/v2.1/ch03-lsh.pdf)
