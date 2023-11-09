@@ -1,27 +1,32 @@
-# %%
 import pandas as pd
 import time
 import src.find_similar_docs as fsd
 
-# %%
-print("Loading dataset...")
-dataset = pd.read_csv("data/dataset_rent_rome_kijiji.tsv", sep="\t")
-print(dataset.head())
-print(dataset.info())
-dataset['doc_id'] = dataset.index
-doc_nr = dataset['doc_id'].max()
-print("Dataset loaded correctly.")
-print("Producing Shingles...")
-start_time = time.time()
-shingling_list = [None] * (doc_nr + 1)
-shingling_size = 10
-signature_size = 50
-bands_nr = 10
-# %%
-shingler_inst = fsd.shingler(shingling_size)
+
+def load_dataset(file, sep="\t"):
+    dataset = pd.read_csv(file, sep=sep)
+    print(f"Loading dataset...{file}")
+    return dataset
+
+
+def create_doc_id(dataset)
+    dataset['doc_id'] = dataset.index
+    return dataset
+
+def get_dataset_len(dataset)
+    doc_nr = dataset['doc_id'].max()
+    return doc_nr
+
+
+def set_up_shingles(shingling_size=10):
+    print("Producing Shingles...")
+    shingler_inst = fsd.shingler(shingling_size)
+    return shingler_inst
+
+    bands_nr = 10
+    signature_size = 50
 signer = fsd.minhashSigner(signature_size)
 
-# %%
 # produce hashed shinglings for all documents
 for index, row in dataset.iterrows():
     doc = row['Title'] + " " + row['Short Description']
@@ -34,7 +39,7 @@ for index, row in dataset.iterrows():
 end_time = time.time()
 print("Shingles produced in:\t %.2f seconds."%(end_time - start_time))
 
-# %%
+
 start_time = time.time()
 print("Computing signature matrix...")
 # produce a signature for each shingle set
@@ -43,7 +48,7 @@ end_time = time.time()
 print("Signature Matrix computed in:\t %.2f seconds." %
       (end_time - start_time))
 
-# %%
+
 lsh_instance = fsd.lsh(threshold=0.8)
 start_time = time.time()
 print("Computing LSH similarity...")
@@ -54,7 +59,6 @@ print(
     "LSH Similarity computed in:\t %.2f seconds.\nSimilar Elements Found: %d" %
     (lsh_computation_time, len(lsh_similar_itemset)))
 
-# %%
 
 # find all the matching doc_id for a given doc_id
 def find_matching_doc(doc_id):
@@ -70,29 +74,36 @@ def get_matching_doc_set(doc_id):
 
     return sim_docs_set
 
-# %%
+
 # add a new column to the dataset containing the set of similar documents
 dataset['similar_docs'] = dataset['doc_id'].apply(get_matching_doc_set)
 dataset['num_similar_docs'] = dataset['similar_docs'].apply(len)
-# %%
+
 # dataset sort by number of similar documents
 dataset = dataset.sort_values(by=['num_similar_docs'], ascending=False)
 
 print(dataset[['Title', 'similar_docs', 'num_similar_docs']].head())
-# %%
+
 # output the dataset to a file
 dataset.to_csv("output/dataset_rent_rome_kijiji_similar.tsv", sep="\t")
-# %%
 # reduce the dataset to only one version of each similar document
 dataset_reduced = dataset.drop_duplicates(subset=['similar_docs'],
                                           keep='first')
-# %%
 dataset_reduced.to_csv("output/dataset_rent_rome_kijiji_similar_reduced.tsv",
                        sep="\t")
 print(dataset_reduced.info())
-# %%
 # show reduction ratio
 print("Reduction ratio: %.2f%%" %
       (100 * (1 - dataset_reduced.shape[0] / dataset.shape[0])))
 
 print("done")
+
+
+if __name__ == "__main__":
+
+    dataset = load_dataset("data/dataset_rent_rome_kijiji.tsv", sep="\t")
+    print(dataset.head())
+    print(dataset.info())
+    doc_nr = get_dataset_len(dataset)
+    
+    shingler_inst, signer = produce_shingles(dataset)
