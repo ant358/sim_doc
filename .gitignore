@@ -1,3 +1,4 @@
 src/_pycache_/
 venv/
 output/
+data/news.json
