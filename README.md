@@ -14,7 +14,8 @@ There are command line arguments to change the data source and the number of has
 * To run in docker
 * ~~To run on json data~~
 * ~~refactor to remove nested loops~~
-* ~~To add results for different thresholds to the output~~
+* ~~To add results for different thresholds to the output~~  
+* remove the higher similarity docs from the lower similarity docs lists  
 * Batch process millions of records keeping the unique ones each time
 
 ## Results
