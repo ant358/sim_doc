@@ -12,7 +12,8 @@ There are command line arguments to change the data source and the number of has
 ## Next steps  
 * To run on a larger dataset. 
 * To run in docker
-* To run on json data - done
+* ~~To run on json data~~
+* ~~refactor to remove nested loops~~
 * To add results for different thresholds to the output
 * Batch process millions of records keeping the unique ones each time
 
