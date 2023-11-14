@@ -50,7 +50,7 @@ if __name__ == "__main__":
     FILENAME = args.filename
     FILETYPE = args.filetype
     OUTPUT = args.output
-
+    overall_time_start = time.time()
     # load the dataset
     try:
         start_time = time.time()
@@ -124,4 +124,4 @@ if __name__ == "__main__":
         % (100 * (1 - dataset_reduced.shape[0] / dataset.shape[0]))
     )
 
-    print("done")
+    print(f"done: overall time taken {time.time() - overall_time_start}")
