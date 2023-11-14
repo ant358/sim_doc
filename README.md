@@ -5,15 +5,16 @@
 ![Stanford slides image](docs/process.png "Process Overview")
 
 ## Usage
-The code requires python 3.11 and pandas.
-To run with the default test data run, `python main.py` from the root directory.
+The code requires Python 3.11 and pandas to load the data.
+To run with the default test data run `python main.py` from the root directory.
 There are command line arguments to change the data source and the number of hash functions used. See main.py for details.
 
 ## Next steps  
 * To run on a larger dataset. 
 * To run in docker
-* To run on json data
+* To run on json data - done
 * To add results for different thresholds to the output
+* Batch process millions of records keeping the unique ones each time
 
 
 ## References
