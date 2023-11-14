@@ -57,7 +57,7 @@ if __name__ == "__main__":
     parser.add_argument("--shingling_size", type=int, default=10)
     parser.add_argument("--signature_size", type=int, default=50)
     parser.add_argument("--bands_nr", type=int, default=10)
-    parser.add_argument("--threshold", type=float, default=0.8)
+    # parser.add_argument("--threshold", type=float, default=0.8)
     parser.add_argument("--filename",
                         type=str,
                         default="data/rent_rome_text.csv")
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     SHINGLING_SIZE = args.shingling_size
     SIGNATURE_SIZE = args.signature_size
     BANDS_NR = args.bands_nr
-    THRESHOLD = 0.8
+    # THRESHOLD = 0.8
     FILENAME = args.filename
     FILETYPE = args.filetype
     OUTPUT = args.output
@@ -103,29 +103,35 @@ if __name__ == "__main__":
     print("Signature Matrix computed in:\t %.2f seconds." %
           (end_time - start_time))
 
-    # compute LSH similarity
-    lsh_instance = fsd.lsh(THRESHOLD)
-    start_time = time.time()
-    print("Computing LSH similarity...")
-    lsh_similar_itemset = lsh_instance.get_similar_items(
-        signature_matrix, BANDS_NR, SIGNATURE_SIZE)
-    end_time = time.time()
-    print("LSH Similarity computed in:\t %.2f seconds.\nNo. Similar : %d" %
-          ((end_time - start_time), len(lsh_similar_itemset)))
+    # use a range of threshold values to find the best one
+    for threshold in [0.6, 0.7, 0.8, 0.9]:
+        # compute LSH similarity
+        lsh_instance = fsd.lsh(threshold)
+        start_time = time.time()
+        print("Computing LSH similarity...")
+        lsh_similar_itemset = lsh_instance.get_similar_items(
+            signature_matrix, BANDS_NR, SIGNATURE_SIZE)
+        end_time = time.time()
+        print("LSH Similarity computed in:\t %.2f seconds.\nNo. Similar : %d" %
+              ((end_time - start_time), len(lsh_similar_itemset)))
 
-    # add a new column to the dataset containing the set of similar documents
-    dataset["similar_docs"] = dataset["doc_id"].apply(get_matching_doc_set)
-    dataset["num_similar_docs"] = dataset["similar_docs"].apply(len)
+        # add a new column to the dataset 
+        # containing the set of similar documents
+        dataset[f"similar_docs_{threshold}"] = dataset["doc_id"].apply(
+            get_matching_doc_set)
+        dataset[f"num_similar_docs_{threshold}"] = dataset[
+            f"similar_docs_{threshold}"].apply(len)
 
     # dataset sort by number of similar documents
-    dataset = dataset.sort_values(by=["num_similar_docs"], ascending=False)
+    dataset = dataset.sort_values(by=["num_similar_docs_0.9"], ascending=False)
 
-    print(dataset[["doc_id", "similar_docs", "num_similar_docs"]].head())
+    print(dataset[["doc_id", "similar_docs_0.9",
+                   "num_similar_docs_0.9"]].head())
 
     # output the dataset to a file
     dataset.to_csv(f"{OUTPUT}.csv", index=False)
     # reduce the dataset to only one version of each similar document
-    dataset_reduced = dataset.drop_duplicates(subset=["similar_docs"],
+    dataset_reduced = dataset.drop_duplicates(subset=["similar_docs_0.9"],
                                               keep="first")
     # output the reduced dataset to a file
     dataset_reduced.to_csv(f"{OUTPUT}_reduced.csv", index=False)

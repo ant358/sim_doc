@@ -14,7 +14,7 @@ There are command line arguments to change the data source and the number of has
 * To run in docker
 * ~~To run on json data~~
 * ~~refactor to remove nested loops~~
-* To add results for different thresholds to the output
+* ~~To add results for different thresholds to the output~~
 * Batch process millions of records keeping the unique ones each time
 
 ## Results
@@ -50,13 +50,13 @@ done: overall time taken 72.08898615837097
 -----------------------------------------------------------------
 ### exp 3 remove nested loops  
 * refactored `get_candidate_list` to remove nested loops  
- done: overall time taken 70.04273414611816 
+ done: overall time taken 70.04
 * refactored `compute_set_signature` to remove nested loops  
- done: overall time taken 68.06141304969788
+ done: overall time taken 68.06
 * refactored `get_signature_matrix_bands` to remove nested loops  
- done: overall time taken 67.85358190536499  
+ done: overall time taken 67.85
 * refactored `get_similar_items` to remove nested loops  
- done: overall time taken 67.85358190536499
+ done: overall time taken 67.70
 * refactored `get_similar_items` to remove nested loops  
  done: overall time taken 68 and 69 so no improvement returned to orginal
 
