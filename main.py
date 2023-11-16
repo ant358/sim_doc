@@ -1,5 +1,6 @@
 import time
 import argparse
+import os
 import src.load_data as ld
 import src.find_similar_docs as fsd
 
@@ -72,6 +73,10 @@ if __name__ == "__main__":
     FILETYPE = args.filetype
     OUTPUT = args.output
     overall_time_start = time.time()
+    # check output dir exits if not create it
+    if not os.path.exists(OUTPUT.split("/")[0]):
+        os.makedirs("output")
+
     # load the dataset
     try:
         start_time = time.time()
